@@ -10,7 +10,7 @@ public class language {
 
         ContextFileParser parser = new LiberalParser();
         ModelLoader modelLoader = new ParallelModelLoader(2, 0, parser);
-        List<LanguageModel> languageModels = modelLoader.loadModels("docs");
+        List<LanguageModel> languageModels = modelLoader.loadModels("languageModels");
         System.out.println(languageModels);
     }
 }
