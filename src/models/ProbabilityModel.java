@@ -11,9 +11,10 @@ public class ProbabilityModel {
     private Set<Character> alphabet;
     private ContextModel contextModel;
     private double alpha;
-
+    private Character unknownCharacter = '\u0000';
     public ProbabilityModel(ContextModel model, double alpha){
         this.alphabet = model.getAlphabet();
+        this.alphabet.add(unknownCharacter);
         this.contextModel = model;
 
         if(alpha < 0 || alpha > 1)
@@ -30,33 +31,16 @@ public class ProbabilityModel {
         }
     }
 
-    public double bitEstimate(String text){
-        double sum = 0;
-        int order = getOrder();
-        for (int i = 0; i < text.length() - (order+1); i++){
-            String symbol = text.substring(i,i+order);
-            char character = text.charAt(i+order);
-            sum -= log2(getProbability(symbol, character));
-        }
-        return sum;
-    }
 
     public double getProbability(String term, char character){
-        return probabilityMultiModel.get(term).get(character);
-    }
-    private double rowEntropy(Map<Character, Double> row){
-
-        double rowEntropy = 0;
-        for(Map.Entry<Character, Double> entry: row.entrySet()){
-            rowEntropy += charEntropy(entry.getValue());
-        }
-        return rowEntropy;
+        Double probability = probabilityMultiModel.get(term).get(character);
+        return probability == null ? probabilityMultiModel.get(term).get(unknownCharacter) : probability;
     }
 
-    private double charEntropy(double prob){
-        return prob == 0 ? 0 : -(prob*log2(prob));
+    public double getProbability(char character){
+        Double probability = probabilityUniModel.get(character);
+        return probability == null ? probabilityUniModel.get(unknownCharacter) : probability;
     }
-
     private void fillProbabilityMultiModel(){
         for(String term : contextModel.getTermsForOrderHigherThanZero()) {
 

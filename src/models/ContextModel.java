@@ -74,8 +74,8 @@ public class ContextModel {
     }
 
     private void createUniDimensionalModel(){
-        for(int i = 0; i< textModel.length()-1; i++ ){
-            char followingChar = textModel.charAt(i+1);
+        for(int i = 0; i< textModel.length(); i++ ){
+            char followingChar = textModel.charAt(i);
             incrementCharOccurrence(uniDimensionalModel, followingChar);
             alphabet.add(followingChar);
         }
