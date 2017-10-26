@@ -9,10 +9,13 @@ public class language {
 
     public static void main(String[] args){
         checkParameterLength(args);
-        String directory = args[0];
-        String textFilename = args[1];
-        int order = Integer.parseInt(args[2]);
-        double alpha = Double.parseDouble(args[3]);
+        String textFilename = args[0];
+        int order = Integer.parseInt(args[1]);
+        double alpha = Double.parseDouble(args[2]);
+        String directory = "trainingModels";
+        
+        if (args.length == 4)
+            directory = args[4];
         
         ContextFileParser parser = new LiberalParser();
         ModelLoader modelLoader = new ParallelModelLoader(order, alpha, parser);
@@ -31,17 +34,17 @@ public class language {
     }
     
     private static void checkParameterLength(String[] args){
-        if(args.length != 4){
+        if(args.length < 3 || args.length > 4){
             printUsage();
         }
     }
     
     private static void printUsage(){
-        System.out.println("USAGE: java language <directory> <textFilename> <order> <alpha>\n"+
-                            "<directory> - directory that contains all the text that representing a certain language\n"+
+        System.out.println("USAGE: java language <textFilename> <order> <alpha> <directory>(opcional)\n"+
                             "<textFilename> - name of the file that contain the text under analysis\n"+
                             "<order> - The order of the finite-context model\n"+
-                            "<alpha> - The level of creativity of the text generator"
+                            "<alpha> - The level of creativity of the text generator\n"+
+                            "<directory> - directory that contains all the text that representing a certain language"
                             );
         System.exit(1);
     }
