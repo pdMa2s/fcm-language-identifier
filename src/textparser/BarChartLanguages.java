@@ -9,39 +9,47 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import models.LanguageModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class BarChartLanguages extends Application {
-    private Map<LanguageModel, Double> estimates;
 
-    public BarChartLanguages(Map<LanguageModel, Double> estimates, String textToAnalise) {
+    private static Map<LanguageModel, Double> estimates;
+
+    public void addEstimates(Map<LanguageModel, Double> estimates) {
         this.estimates = estimates;
     }
 
-    @Override
-    public void start(Stage stage) {
-        stage.setTitle("Bar Chart Sample");
+    @Override public void start(Stage stage) {
+        stage.setTitle("Bit estimates for each language model");
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String,Number> bc =
                 new BarChart<>(xAxis, yAxis);
-        bc.setTitle("Country Summary");
-        xAxis.setLabel("Country");
-        yAxis.setLabel("Value");
+        bc.setTitle("Bit Estimates");
+        xAxis.setLabel("Language");
+        yAxis.setLabel("Nº of bits");
 
-        XYChart.Series series1 = new XYChart.Series();
+        List<XYChart.Series> seriesList = new ArrayList<>();
+        System.out.println(estimates);
         for(LanguageModel model : estimates.keySet()){
-            series1.getData().add(new XYChart.Data(model.getLanguage(), estimates.get(model) ));
+            XYChart.Series series  = new XYChart.Series();
+            series.setName(model.toString());
+            series.getData().add(new XYChart.Data("", estimates.get(model)));
+            seriesList.add(series);
         }
 
 
+
         Scene scene  = new Scene(bc,700,500);
-        bc.getData().addAll(series1);
+        for(XYChart.Series serie : seriesList)
+            bc.getData().add(serie);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void main(String[] args) {
-        launch(args);
+    public void show() {
+        launch();
     }
 }

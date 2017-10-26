@@ -1,4 +1,5 @@
 import models.LanguageModel;
+import textparser.BarChartLanguages;
 import textparser.ContextFileParser;
 import textparser.LiberalParser;
 
@@ -13,7 +14,8 @@ public class language {
         int order = Integer.parseInt(args[1]);
         double alpha = Double.parseDouble(args[2]);
         String directory = "trainingModels";
-        
+        BarChartLanguages chart = new BarChartLanguages();
+
         if (args.length == 4)
             directory = args[3];
         
@@ -24,7 +26,11 @@ public class language {
 
         LanguagePicker languagePicker = new LanguagePicker(languageModels);
         LanguageModel languageModel = languagePicker.languageOfText(textToAnalise);
-        System.out.println("Language of the file EN: "+languageModel.getLanguage());
+        System.out.println("Language of the text: "+languageModel.getLanguage());
+
+        chart.addEstimates(languagePicker.getBitEstimates());
+        chart.show();
+
     }
 
     private static String readText(String fileName){
