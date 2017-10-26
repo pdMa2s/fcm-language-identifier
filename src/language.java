@@ -21,8 +21,7 @@ public class language {
         ModelLoader modelLoader = new ParallelModelLoader(order, alpha, parser);
         List<LanguageModel> languageModels = modelLoader.loadModels(directory);
         String textToAnalise = readText(textFilename);
-        System.out.println(languageModels.get(0).bitEstimate(textToAnalise));
-        
+
         LanguagePicker languagePicker = new LanguagePicker(languageModels);
         LanguageModel languageModel = languagePicker.languageOfText(textToAnalise);
         System.out.println("Language of the file EN: "+languageModel.getLanguage());
@@ -40,7 +39,7 @@ public class language {
     }
     
     private static void printUsage(){
-        System.out.println("USAGE: java language <textFilename> <order> <alpha> <directory>(opcional)\n"+
+        System.out.println("USAGE: java language <textFilename> <order> <alpha> <directory>(optional)\n"+
                             "<textFilename> - name of the file that contain the text under analysis\n"+
                             "<order> - The order of the finite-context model\n"+
                             "<alpha> - The level of creativity of the text generator\n"+

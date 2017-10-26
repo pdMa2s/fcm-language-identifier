@@ -32,12 +32,12 @@ public class WorkerReader extends Thread {
     }
 
     private String parseFileName(File documentFile){
-        String[] parsedName = documentFile.getName().split("_");
+        /*String[] parsedName = documentFile.getName().split("_");
         if (parsedName.length < 1){
             System.err.println("ERROR file with invalid name!");
             System.exit(3);
-        }
-        return parsedName[0];
+        }*/
+        return documentFile.getName();
     }
 
 }
