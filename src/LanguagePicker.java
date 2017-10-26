@@ -16,6 +16,7 @@ public class LanguagePicker {
     public LanguageModel languageOfText(String textToAnalise){
         int minimumIndex = 0;
         double minimum = languageModels.get(0).bitEstimate(textToAnalise);
+        bitEstimates.put(languageModels.get(0), minimum);
         for (int i = 1; i<languageModels.size(); i++ ){
             LanguageModel model = languageModels.get(i);
             double bitEstimate = model.bitEstimate(textToAnalise);

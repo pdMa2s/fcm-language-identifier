@@ -23,6 +23,7 @@ public class ParallelModelLoader implements ModelLoader {
     @Override
     public List<LanguageModel> loadModels(String dirPath) {
         File modelsDirectory = new File(dirPath);
+        checkDirectoryExists(modelsDirectory);
         modelFiles = modelsDirectory.listFiles();
         checkFileLength(modelFiles);
         Thread[] readers = initializeThreads(modelFiles.length);
@@ -54,6 +55,14 @@ public class ParallelModelLoader implements ModelLoader {
             System.err.println("There is no language files to process!");
             System.exit(2);
         }
+    }
+
+    private void checkDirectoryExists(File dir){
+        if(!dir.isDirectory() || !dir.exists()){
+            System.err.println(dir.getName() +" is not a directory!");
+            System.exit(2);
+        }
+
     }
 
 

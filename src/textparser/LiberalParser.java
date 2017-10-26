@@ -21,7 +21,7 @@ public class LiberalParser implements ContextFileParser {
             sb.setLength(sb.length() - 1);
             content = sb.toString();
         } catch (IOException e) {
-            System.err.println("ERROR while reading file");
+            System.err.println("ERROR while reading file: "+ file.getName());
             System.exit(2);
         }
         return content;

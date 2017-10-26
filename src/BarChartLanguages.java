@@ -1,4 +1,3 @@
-package textparser;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -32,7 +31,7 @@ public class BarChartLanguages extends Application {
         yAxis.setLabel("Nº of bits");
 
         List<XYChart.Series> seriesList = new ArrayList<>();
-        System.out.println(estimates);
+
         for(LanguageModel model : estimates.keySet()){
             XYChart.Series series  = new XYChart.Series();
             series.setName(model.toString());
@@ -42,9 +41,9 @@ public class BarChartLanguages extends Application {
 
 
 
-        Scene scene  = new Scene(bc,700,500);
-        for(XYChart.Series serie : seriesList)
-            bc.getData().add(serie);
+        Scene scene  = new Scene(bc,600,450);
+        for(XYChart.Series sr : seriesList)
+            bc.getData().add(sr);
         stage.setScene(scene);
         stage.show();
     }
