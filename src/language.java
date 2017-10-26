@@ -21,11 +21,15 @@ public class language {
         ModelLoader modelLoader = new ParallelModelLoader(order, alpha, parser);
         List<LanguageModel> languageModels = modelLoader.loadModels(directory);
         String textToAnalise = readText(textFilename);
-        System.out.println(languageModels.get(0).bitEstimate(textToAnalise));
+        
+        for (LanguageModel languageModel: languageModels) {
+            System.out.println("Bit estimate for language "+languageModel.getLanguage()+
+                    ": "+languageModel.bitEstimate(textToAnalise));
+        }
         
         LanguagePicker languagePicker = new LanguagePicker(languageModels);
         LanguageModel languageModel = languagePicker.languageOfText(textToAnalise);
-        System.out.println("Language of the file EN: "+languageModel.getLanguage());
+        System.out.println("Language of the text: "+languageModel.getLanguage());
     }
 
     private static String readText(String fileName){
