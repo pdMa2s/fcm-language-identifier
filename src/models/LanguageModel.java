@@ -41,6 +41,10 @@ public class LanguageModel {
     {
         return Math.log(a) / Math.log(b);
     }
+    
+    public String getLanguage() {
+        return language;
+    }
 
     @Override
     public String toString() {

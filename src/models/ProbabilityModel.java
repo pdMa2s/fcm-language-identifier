@@ -12,6 +12,7 @@ public class ProbabilityModel {
     private ContextModel contextModel;
     private double alpha;
     private Character unknownCharacter = '\u0000';
+    
     public ProbabilityModel(ContextModel model, double alpha){
         this.alphabet = model.getAlphabet();
         this.alphabet.add(unknownCharacter);
@@ -33,14 +34,20 @@ public class ProbabilityModel {
 
 
     public double getProbability(String term, char character){
-        Double probability = probabilityMultiModel.get(term).get(character);
-        return probability == null ? probabilityMultiModel.get(term).get(unknownCharacter) : probability;
+        Map<Character, Double> probabilityFollow = probabilityMultiModel.get(term);
+        if (probabilityFollow == null)
+            return probabilityOfAChar(0,0);
+        else {
+            Double probability = probabilityFollow.get(character);
+            return probability == null ? probabilityFollow.get(unknownCharacter) : probability;
+        }
     }
 
     public double getProbability(char character){
         Double probability = probabilityUniModel.get(character);
         return probability == null ? probabilityUniModel.get(unknownCharacter) : probability;
     }
+    
     private void fillProbabilityMultiModel(){
         for(String term : contextModel.getTermsForOrderHigherThanZero()) {
 
@@ -59,8 +66,9 @@ public class ProbabilityModel {
     private void fillProbabilityUniModel(){
         Map<Character, Integer> ocurrences = contextModel.getOcurrencesForOrderEqualToZero();
         int totalOcurrences = getTotalOcurencesOfRow(ocurrences);
-        for(Character term : ocurrences.keySet()) {
-            probabilityUniModel.put(term, probabilityOfAChar(totalOcurrences, ocurrences.get(term)));
+        for(Character term : alphabet) {
+            int nrOccurrences = ocurrences.get(term) == null ? 0 : ocurrences.get(term); 
+            probabilityUniModel.put(term, probabilityOfAChar(totalOcurrences, nrOccurrences));
         }
     }
 
@@ -86,22 +94,6 @@ public class ProbabilityModel {
 
     private double probabilityOfAChar(int total, int nrOcurrences){
         return (nrOcurrences + alpha)/(total +(alpha *alphabet.size()));
-    }
-    private double log2( double a )
-    {
-        return logb(a,2);
-    }
-    private double logb( double a, double b )
-    {
-        return Math.log(a) / Math.log(b);
-    }
-    
-    public Map<String, Map<Character, Double>> getProbabilityMultiModel() {
-        return probabilityMultiModel;
-    }
-
-    public Map<Character, Double> getProbabilityUniModel() {
-        return probabilityUniModel;
     }
     
     public int getOrder() {
