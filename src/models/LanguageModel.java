@@ -35,7 +35,7 @@ public class LanguageModel {
     }
     private double log2( double a )
     {
-        return a == 0 ? 0.00001 : logb(a,2);
+        return a == 0 ? 0 : logb(a,2);
     }
     private double logb( double a, double b )
     {
@@ -48,6 +48,6 @@ public class LanguageModel {
 
     @Override
     public String toString() {
-        return "language='" + language + '\'';
+        return "'"+ language + '\'';
     }
 }

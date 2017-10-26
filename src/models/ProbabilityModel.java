@@ -36,7 +36,7 @@ public class ProbabilityModel {
     public double getProbability(String term, char character){
         Map<Character, Double> probabilityFollow = probabilityMultiModel.get(term);
         if (probabilityFollow == null)
-            return probabilityOfAChar(0,0);
+            return (double) 1/alphabet.size();
         else {
             Double probability = probabilityFollow.get(character);
             return probability == null ? probabilityFollow.get(unknownCharacter) : probability;
