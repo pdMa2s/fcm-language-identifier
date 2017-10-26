@@ -15,7 +15,7 @@ public class language {
         String directory = "trainingModels";
         
         if (args.length == 4)
-            directory = args[4];
+            directory = args[3];
         
         ContextFileParser parser = new LiberalParser();
         ModelLoader modelLoader = new ParallelModelLoader(order, alpha, parser);
