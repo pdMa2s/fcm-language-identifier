@@ -50,4 +50,23 @@ public class LanguageModel {
     public String toString() {
         return "'"+ language + '\'';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LanguageModel that = (LanguageModel) o;
+
+        if (probabilityModel != null ? !probabilityModel.equals(that.probabilityModel) : that.probabilityModel != null)
+            return false;
+        return language != null ? language.equals(that.language) : that.language == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = probabilityModel != null ? probabilityModel.hashCode() : 0;
+        result = 31 * result + (language != null ? language.hashCode() : 0);
+        return result;
+    }
 }

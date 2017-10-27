@@ -4,6 +4,7 @@ import textparser.LiberalParser;
 
 import java.util.List;
 import java.io.File;
+import java.util.Map;
 
 public class language {
 
@@ -12,7 +13,7 @@ public class language {
         String textFilename = args[0];
         int order = Integer.parseInt(args[1]);
         double alpha = Double.parseDouble(args[2]);
-        String directory = "trainingModels";
+        String directory = "models40k";
         BarChartLanguages chart = new BarChartLanguages();
 
         if (args.length == 4)
@@ -24,10 +25,24 @@ public class language {
         String textToAnalise = readText(textFilename);
 
         LanguagePicker languagePicker = new LanguagePicker(languageModels);
-        LanguageModel languageModel = languagePicker.languageOfText(textToAnalise);
-        System.out.println("Language of the text: "+languageModel.getLanguage());
+        LanguageModel chosenLanguage = languagePicker.languageOfText(textToAnalise);
 
-        chart.addEstimates(languagePicker.getBitEstimates());
+        Map<LanguageModel, Double> estimates = languagePicker.getBitEstimates();
+        double sum = 0;
+        double estimateOfChosen = 0;
+        for(LanguageModel model: estimates.keySet()){
+            double estimate = estimates.get(model);
+            if(!model.equals(chosenLanguage))
+                sum += estimate;
+            else
+                estimateOfChosen = estimate;
+            System.out.println(model + ": " + estimate);
+        }
+        double average = sum/estimates.size();
+        System.out.println("Language of the text: "+chosenLanguage.getLanguage());
+        System.out.println("Average bit estimates for other languages: "+ average);
+        System.out.println("Difference between average and chosen language estimate: "+ (average-estimateOfChosen));
+        chart.addEstimates(estimates);
         chart.show();
 
     }
@@ -48,7 +63,7 @@ public class language {
                             "<textFilename> - name of the file that contain the text under analysis\n"+
                             "<order> - The order of the finite-context model\n"+
                             "<alpha> - The level of creativity of the text generator\n"+
-                            "<directory> - directory that contains all the text that representing a certain language"
+                            "<directory>(optional) - directory that contains all the text that representing a certain language"
                             );
         System.exit(1);
     }
