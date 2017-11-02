@@ -13,7 +13,7 @@ public class language {
         String textFilename = args[0];
         int order = Integer.parseInt(args[1]);
         double alpha = Double.parseDouble(args[2]);
-        String directory = "models40k";
+        String directory = "models150k";
         BarChartLanguages chart = new BarChartLanguages();
 
         if (args.length == 4)
@@ -39,9 +39,9 @@ public class language {
             System.out.println(model + ": " + estimate);
         }
         double average = sum/estimates.size();
-        System.out.println("Language of the text: "+chosenLanguage.getLanguage());
+        System.out.println("Language of the text: "+chosenLanguage.getLanguage()+ " whit a bit estimate of: "+ estimateOfChosen);
         System.out.println("Average bit estimates for other languages: "+ average);
-        System.out.println("Difference between average and chosen language estimate: "+ (average-estimateOfChosen));
+        System.out.println("Difference between average and chosen language estimate: "+ Math.abs(average-estimateOfChosen));
         chart.addEstimates(estimates);
         chart.show();
 

@@ -39,8 +39,6 @@ public class BarChartLanguages extends Application {
             seriesList.add(series);
         }
 
-
-
         Scene scene  = new Scene(bc,600,450);
         for(XYChart.Series sr : seriesList)
             bc.getData().add(sr);
