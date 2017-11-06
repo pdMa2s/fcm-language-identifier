@@ -1,6 +1,7 @@
 import models.LanguageModel;
 import textparser.ContextFileParser;
 import textparser.LiberalParser;
+import textparser.RestrictiveParser;
 
 import java.util.List;
 import java.io.File;
@@ -22,7 +23,7 @@ public class language {
         ContextFileParser parser = new LiberalParser();
         ModelLoader modelLoader = new ParallelModelLoader(order, alpha, parser);
         List<LanguageModel> languageModels = modelLoader.loadModels(directory);
-        String textToAnalise = readText(textFilename);
+        String textToAnalise = readText(textFilename, parser);
 
         LanguagePicker languagePicker = new LanguagePicker(languageModels);
         LanguageModel chosenLanguage = languagePicker.languageOfText(textToAnalise);
@@ -32,23 +33,28 @@ public class language {
         double estimateOfChosen = 0;
         for(LanguageModel model: estimates.keySet()){
             double estimate = estimates.get(model);
-            if(!model.equals(chosenLanguage))
-                sum += estimate;
-            else
+            if(model.equals(chosenLanguage))
                 estimateOfChosen = estimate;
+            sum += estimate;
+
             System.out.println(model + ": " + estimate);
         }
         double average = sum/estimates.size();
+        double distanceToAverage = 0;
+        for(LanguageModel model : estimates.keySet()){
+            distanceToAverage = Math.abs(Math.pow( estimates.get(model) - average, 2));
+        }
+        double standardDeviation = Math.sqrt(distanceToAverage/estimates.size());
         System.out.println("Language of the text: "+chosenLanguage.getLanguage()+ " whit a bit estimate of: "+ estimateOfChosen);
         System.out.println("Average bit estimates for other languages: "+ average);
-        System.out.println("Difference between average and chosen language estimate: "+ Math.abs(average-estimateOfChosen));
+        System.out.println("Standard deviation: " + standardDeviation);
+
         chart.addEstimates(estimates);
         chart.show();
 
     }
 
-    private static String readText(String fileName){
-        ContextFileParser parser = new LiberalParser();
+    private static String readText(String fileName, ContextFileParser parser){
         return parser.parse(new File(fileName));
     }
     
