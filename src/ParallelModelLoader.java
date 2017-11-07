@@ -34,7 +34,8 @@ public class ParallelModelLoader implements ModelLoader {
     private Thread[] initializeThreads(int threadNumber){
         Thread[] workers = new  WorkerReader[threadNumber];
         for(int i = 0; i< workers.length; i++){
-            workers[i] = new WorkerReader(modelFiles[i], order, alpha,parser ,models);
+            String documentText = parser.parse(modelFiles[i]);
+            workers[i] = new WorkerReader(modelFiles[i].getName(), order, alpha,documentText ,models);
         }
         return workers;
     }
