@@ -1,8 +1,6 @@
 import models.LanguageModel;
 import textparser.ContextFileParser;
 import textparser.LiberalParser;
-import textparser.RestrictiveParser;
-
 import java.util.List;
 import java.io.File;
 import java.util.Map;
