@@ -51,13 +51,13 @@ public class ProbabilityModel {
     private void fillProbabilityMultiModel(){
         for(String term : contextModel.getTermsForOrderHigherThanZero()) {
 
-            Map<Character, Integer> ocurrences = contextModel.getOcurrencesForOrderHigherThanZero(term);
-            int totalOcurrences = getTotalOcurencesOfRow(ocurrences);
+            Map<Character, Integer> occurrences = contextModel.getOcurrencesForOrderHigherThanZero(term);
+            int totalOccurrences = getTotalOccurencesOfRow(occurrences);
             for (char c : alphabet) {
-                Integer nrOcurrences = ocurrences.get(c);
-                if(nrOcurrences == null)
-                    nrOcurrences = 0;
-                fillCharProbabilities(term, c, totalOcurrences, nrOcurrences);
+                Integer nrOccurrences = occurrences.get(c);
+                if(nrOccurrences == null)
+                    nrOccurrences = 0;
+                fillCharProbabilities(term, c, totalOccurrences, nrOccurrences);
             }
         }
 
@@ -65,7 +65,7 @@ public class ProbabilityModel {
 
     private void fillProbabilityUniModel(){
         Map<Character, Integer> ocurrences = contextModel.getOcurrencesForOrderEqualToZero();
-        int totalOcurrences = getTotalOcurencesOfRow(ocurrences);
+        int totalOcurrences = getTotalOccurencesOfRow(ocurrences);
         for(Character term : alphabet) {
             int nrOccurrences = ocurrences.get(term) == null ? 0 : ocurrences.get(term); 
             probabilityUniModel.put(term, probabilityOfAChar(totalOcurrences, nrOccurrences));
@@ -83,7 +83,7 @@ public class ProbabilityModel {
         probabilities.put(c,probabilityOfAChar(total, nrOcurrences));
         probabilityMultiModel.put(term,probabilities);
     }
-    private int getTotalOcurencesOfRow(Map<Character, Integer> ocurrences){
+    private int getTotalOccurencesOfRow(Map<Character, Integer> ocurrences){
         int sum = 0;
         for(char k : ocurrences.keySet()){
             sum += ocurrences.get(k);
@@ -92,8 +92,8 @@ public class ProbabilityModel {
     }
 
 
-    private double probabilityOfAChar(int total, int nrOcurrences){
-        return (nrOcurrences + alpha)/(total +(alpha *alphabet.size()));
+    private double probabilityOfAChar(int total, int nrOccurrences){
+        return (nrOccurrences + alpha)/(total +(alpha *alphabet.size()));
     }
     
     public int getOrder() {
